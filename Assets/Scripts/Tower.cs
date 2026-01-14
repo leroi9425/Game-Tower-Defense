@@ -26,7 +26,19 @@ public class Tower : MonoBehaviour
                 currentUI = Instantiate(towerUpgradeUIPrefab, canvas.transform);
 
                 // Gọi Init để kích hoạt flag justOpened
+
                 TowerUpgrageUI uiScript = currentUI.GetComponent<TowerUpgrageUI>();
+                if (uiScript != null)
+                {
+                    uiScript.tower = this;
+                    uiScript.Init();
+                    Debug.Log("Đã lấy được Script UI thành công!");
+                }
+                else
+                {
+                    // Nếu dòng này hiện lên ở bảng Console, nghĩa là bạn gán nhầm Prefab
+                    Debug.LogError("LỖI: Prefab này không có gắn script TowerUpgrageUI!");
+                }
                 uiScript.tower = this;
                 uiScript.Init();
             }
