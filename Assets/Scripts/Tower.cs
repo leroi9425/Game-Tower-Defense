@@ -1,48 +1,44 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ToweUpgrageState
-{
-    public Sprite sprite;
-}
 public class Tower : MonoBehaviour
 {
     private SpriteRenderer sr;
     private GameObject currentUI;
-    public ToweUpgrageState[] upgrageStates;
-    private int upgrareState;
     public GameObject towerUpgradeUIPrefab;
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //ToweUpgrageState currentUpgrageState = upgrageStates[upgrareState];
-        //sr.sprite = currentUpgrageState.sprite;
-
-    }
     private void OnMouseDown()
     {
+        // 1. Chặn click xuyên qua UI
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
+        // 2. Kiểm tra nếu UI đã bị xóa (Missing) thì gán lại null để tạo mới
         if (currentUI == null)
         {
-            currentUI = Instantiate(towerUpgradeUIPrefab, FindFirstObjectByType<Canvas>().transform);
+            Canvas canvas = FindFirstObjectByType<Canvas>();
+            if (canvas != null)
+            {
+                currentUI = Instantiate(towerUpgradeUIPrefab, canvas.transform);
 
-            // Thêm 2 dòng này để "cứu" Menu không bị xóa
-            TowerUpgrageUI uiScript = currentUI.GetComponent<TowerUpgrageUI>();
-            uiScript.tower = this;
-            uiScript.Init(); // Báo cho Menu biết là vừa mới sinh ra
+                // Gọi Init để kích hoạt flag justOpened
+                TowerUpgrageUI uiScript = currentUI.GetComponent<TowerUpgrageUI>();
+                uiScript.tower = this;
+                uiScript.Init();
+            }
+        }
+        else
+        {
+            // Nếu đang hiện rồi thì reset flag để không bị tự xóa
+            currentUI.GetComponent<TowerUpgrageUI>().Init();
         }
 
+        // 3. Đưa UI về đúng vị trí chuột
+        // LƯU Ý: Prefab Panel phải để Anchor là Center, Pos 0,0,0
         currentUI.transform.position = Input.mousePosition + new Vector3(80, -80, 0);
     }
 }
