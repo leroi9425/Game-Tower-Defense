@@ -2,19 +2,19 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Enviroment
+  - Tower
+  - Enemy
+  - Effect
   - 
   - 
   - 
@@ -41,3 +41,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Environment
+    uniqueID: 3345133103
+    locked: 0
+  - name: Tower
+    uniqueID: 1203079843
+    locked: 0
+  - name: Enemy
+    uniqueID: 1074115003
+    locked: 0
+  m_RenderingLayers:
+  - Default
