@@ -1,56 +1,46 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Tower : MonoBehaviour
+[System.Serializable]
+public class TowerUpgradeStage
 {
-    private SpriteRenderer sr;
-    private GameObject currentUI;
+    public float range;
+    public float fireRate;
+    public Sprite sprite;
+    public int price;
+}
+public class Tower : MonoBehaviour, IClickable2D
+{
+    public float range = 3f;
+    public float fireRate = 1f;
+    public GameObject projectilePrefab;
+    public Transform firePoint;
+
+    public TowerUpgradeStage[] upgradeStages;
+    public int indexUpgradeStage = 0;
+    public SpriteRenderer sr;
     public GameObject towerUpgradeUIPrefab;
+    public GameObject currentUI;
+
+    public int towerPrice = 1;
+    private float fireCooldown = 0f;
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        Debug.Log(sr.name); // trả về tower_0
     }
 
-    private void OnMouseDown()
+    private void Update()
     {
-        // 1. Chặn click xuyên qua UI
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-
-        // 2. Kiểm tra nếu UI đã bị xóa (Missing) thì gán lại null để tạo mới
-        if (currentUI == null)
-        {
-            Canvas canvas = FindFirstObjectByType<Canvas>();
-            if (canvas != null)
-            {
-                currentUI = Instantiate(towerUpgradeUIPrefab, canvas.transform);
-
-                // Gọi Init để kích hoạt flag justOpened
-
-                TowerUpgrageUI uiScript = currentUI.GetComponent<TowerUpgrageUI>();
-                if (uiScript != null)
-                {
-                    uiScript.tower = this;
-                    uiScript.Init();
-                    Debug.Log("Đã lấy được Script UI thành công!");
-                }
-                else
-                {
-                    // Nếu dòng này hiện lên ở bảng Console, nghĩa là bạn gán nhầm Prefab
-                    Debug.LogError("LỖI: Prefab này không có gắn script TowerUpgrageUI!");
-                }
-                uiScript.tower = this;
-                uiScript.Init();
-            }
-        }
-        else
-        {
-            // Nếu đang hiện rồi thì reset flag để không bị tự xóa
-            currentUI.GetComponent<TowerUpgrageUI>().Init();
-        }
-
-        // 3. Đưa UI về đúng vị trí chuột
-        // LƯU Ý: Prefab Panel phải để Anchor là Center, Pos 0,0,0
-        currentUI.transform.position = Input.mousePosition + new Vector3(80, -80, 0);
+        
+    }
+    private void Upgrade()
+    {
+        TowerUpgradeStage towerUpgradeStage = upgradeStages[indexUpgradeStage];  // trạng thái upgrade hiện tại của tháp
+    }
+    public void OnClick()
+    {
+        Debug.Log("Clicked vao thap roi");
     }
 }
