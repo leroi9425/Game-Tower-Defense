@@ -18,6 +18,7 @@ public class TowerUpgrageUI : MonoBehaviour
     public void TryUpgrade()
     {
         Debug.Log("Bạn vừa ấn nút nâng cấp");
+        Tower.indexUpgradeStage += 1;
     }
     private void Update()
     {

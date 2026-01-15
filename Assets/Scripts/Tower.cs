@@ -17,7 +17,7 @@ public class Tower : MonoBehaviour
     public Transform firePoint;
 
     public TowerUpgradeStage[] upgradeStages;
-    public int indexUpgradeStage = 0;
+    public static int indexUpgradeStage = 0;
     public SpriteRenderer sr;
     public GameObject towerUpgradeUIPrefab;
     public GameObject currentUI;
@@ -33,11 +33,13 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
-        
+        Upgrade();
     }
     private void Upgrade()
     {
+        Debug.Log("Stage: " + indexUpgradeStage);
         TowerUpgradeStage towerUpgradeStage = upgradeStages[indexUpgradeStage];  // trạng thái upgrade hiện tại của tháp
+        sr.sprite = towerUpgradeStage.sprite;
     }
     public void OnMouseDown()
     {
