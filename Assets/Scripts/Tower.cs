@@ -9,7 +9,7 @@ public class TowerUpgradeStage
     public Sprite sprite;
     public int price;
 }
-public class Tower : MonoBehaviour, IClickable2D
+public class Tower : MonoBehaviour
 {
     public float range = 3f;
     public float fireRate = 1f;
@@ -39,8 +39,20 @@ public class Tower : MonoBehaviour, IClickable2D
     {
         TowerUpgradeStage towerUpgradeStage = upgradeStages[indexUpgradeStage];  // trạng thái upgrade hiện tại của tháp
     }
-    public void OnClick()
+    public void OnMouseDown()
     {
         Debug.Log("Clicked vao thap roi");
+        if (currentUI == null)
+        {
+            // Tạo UI nâng cấp làm con của Canvas
+            currentUI = Instantiate(towerUpgradeUIPrefab, FindObjectOfType<Canvas>().transform);
+        }
+        TowerUpgrageUI currentUpgradeUI = currentUI.GetComponent<TowerUpgrageUI>();
+        currentUpgradeUI.tower = this;
+        // Hiển thị UI tại vị trí chuột kèm độ lệch (offset)
+        currentUI.transform.position = Input.mousePosition + new Vector3(50, -50);
+
+        if (indexUpgradeStage >= upgradeStages.Length) return;
+        currentUpgradeUI.priceTxt.text = upgradeStages[indexUpgradeStage].price.ToString();
     }
 }
